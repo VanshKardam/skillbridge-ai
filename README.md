@@ -1,21 +1,62 @@
 # Skillbridge AI
 
-## The Limitations of Traditional Systems
-The fundamental problem with traditional, rule-based systems is that when you feed them a resume and a Job Description (JD), they completely miss the nuances. They cannot comprehend the underlying context or accurately identify complex skill gaps. To bridge this gap, we need an AI-driven approach.
+Skillbridge AI is an intelligent, GenAI-driven application designed to bridge the gap between candidate resumes and Job Descriptions (JDs). Traditional rule-based systems often miss nuanced skills and context. Skillbridge AI solves this by leveraging Generative AI to provide deep contextual analysis, highlight exact skill gaps, and offer actionable insights for candidates to improve their chances of landing their target roles.
 
-## The GenAI Engineering Challenge
-However, introducing AI brings its own set of challenges—namely, AI hallucinations. This highlights a crucial industry reality: working with Generative AI is about much more than just making simple API calls. True AI engineering involves:
+## 🚀 Key Features
 
-* **Enforcing Strict Constraints:** Compelling the AI to consistently generate strictly structured outputs (like JSON).
-* **Data Validation:** Rigorously validating the AI's response to ensure accuracy.
-* **Seamless Integration:** Integrating that validated data flawlessly into your backend architecture.
+*   **Smart Uploads:** Users can securely upload their current resume alongside the specific Job Description they are targeting.
+*   **Deep Contextual Analysis:** The system goes beyond keyword matching. It deeply analyzes both documents to comprehend the underlying context and accurately identify complex skill gaps.
+*   **Actionable Insights & Preparation:** Based on the identified gaps, the application dynamically generates relevant technical and behavioral interview questions, along with a customized preparation plan strictly tailored to the JD.
+*   **ATS-Friendly Resume Generation:** Leverages AI to auto-generate a newly optimized, fully ATS-compliant resume engineered to bypass screening filters for the specific role.
 
-There is a massive difference between simply using an AI tool and engineering a robust AI system. Today, companies no longer want basic applications that just store data; they demand intelligent systems that can comprehend information and take decisive action based on it.
+## 🧠 The GenAI Engineering Approach
 
-## What We Are Building
-To understand how to engineer a truly intelligent system, we are going to build a comprehensive, end-to-end GenAI Project. Here is how the workflow will look:
+Building Skillbridge AI goes beyond making simple API calls. It focuses on robust AI engineering principles to prevent hallucinations and ensure data reliability:
 
-1. **Smart Uploads:** Once a user logs in, they will upload their current resume alongside their targeted Job Description.
-2. **Contextual Analysis:** Our system will deeply analyze both documents to identify and highlight the exact skill gaps.
-3. **Actionable Insights:** Based on this analysis, the system will dynamically generate relevant technical and behavioral interview questions, along with a customized preparation plan tailored strictly to the JD.
-4. **ATS-Friendly Resume Generation:** Finally, the user can leverage the AI to auto-generate a newly optimized, fully ATS-compliant resume engineered to beat screening filters for that specific role.
+1.  **Enforcing Strict Constraints:** Compelling the LLMs to consistently generate strictly structured outputs (e.g., validated JSON formats).
+2.  **Rigorous Data Validation:** Validating the AI's response post-generation to ensure high accuracy and adherence to the required schema before it reaches the user.
+3.  **Seamless Backend Integration:** Integrating validated AI data flawlessly into the backend architecture (Node.js, Express, MongoDB).
+
+## 🛠️ Tech Stack
+
+*   **Backend:** Node.js, Express.js
+*   **Database:** MongoDB (Mongoose)
+*   **AI Integration:** (LLM Integration to be added - e.g., OpenAI, Gemini, etc.)
+*   **Environment Management:** dotenv
+
+## 🚦 Getting Started
+
+### Prerequisites
+*   Node.js installed
+*   MongoDB instance (Local or Atlas)
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone <repository-url>
+    cd skillbridge-ai
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Set up environment variables:
+    Create a `.env` file in the root directory and add your configurations:
+    ```env
+    MONGO_URI=your_mongodb_connection_string
+    PORT=3000
+    ```
+
+4.  Start the development server:
+    ```bash
+    npm run dev
+    # or
+    node server.js
+    ```
+
+## 📝 License
+
+This project is open-source and available under the [ISC License](LICENSE).
