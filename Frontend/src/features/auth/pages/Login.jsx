@@ -1,8 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router'
 import "../auth.form.scss";
+import { useAuth } from '../hooks/useAuth'
 
 function Login() {
+
+    const { loading, handleLogin} = useAuth()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
     return (
         <main className="split-layout">
             <div className="login-left">
