@@ -9,7 +9,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <div>Home Page (Go to /login)</div>
+                element: <h1 style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Homepage stay here</h1>
             },
             {
                 path: "/login",
