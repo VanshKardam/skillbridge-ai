@@ -1,8 +1,41 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router'
 import "../auth.form.scss";
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router';
 
-function Register() {
+const Register = () => {
+
+    const navigate = useNavigate()
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const {loading, handleRegister} = useAuth()
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const result = await handleRegister({username, email, password})
+        if (result.success) {
+            navigate("/")
+        } else {
+            alert("Registration failed: " + result.message)
+        }
+    }
+
+    if(loading) {
+        return (
+            <main className="split-layout" style={{ justifyContent: 'center', alignItems: 'center', background: '#0b0f19' }}>
+                <div className="bg-shape shape-1"></div>
+                <div className="bg-shape shape-2"></div>
+                <div style={{ zIndex: 1, color: 'white', textAlign: 'center' }}>
+                    <h2 style={{ fontSize: '2.5rem', background: 'linear-gradient(to right, #06B6D4, #3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0px 4px 15px rgba(6, 182, 212, 0.4))' }}>Creating Account...</h2>
+                    <p style={{ color: '#cbd5e1', marginTop: '1rem', fontSize: '1.1rem' }}>Please wait while we register you</p>
+                </div>
+            </main>
+        )
+    }
+
     return (
         <main className="split-layout">
             <div className="login-left">
@@ -22,18 +55,24 @@ function Register() {
                         <p>Sign up to start your AI-powered career journey.</p>
                     </div>
 
-                    <form action="">
+                    <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <label htmlFor="username">Username</label>
-                            <input type="text" id="username" name="username" placeholder="Choose a username" />
+                            <input
+                            onChange={(e) => {setUsername(e.target.value)}}
+                             type="text" id="username" name="username" placeholder="Choose a username" />
                         </div>
                         <div className="input-group">
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Enter email address" />
+                            <input
+                            onChange={(e) => {setEmail(e.target.value)}}
+                             type="email" id="email" name="email" placeholder="Enter email address" />
                         </div>
                         <div className="input-group">
                             <label htmlFor="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Create a password" />
+                            <input 
+                            onChange={(e) => {setPassword(e.target.value)}}
+                            type="password" id="password" name="password" placeholder="Create a password" />
                         </div>
 
                         <button className="button primary-button" type="submit">Sign Up</button>

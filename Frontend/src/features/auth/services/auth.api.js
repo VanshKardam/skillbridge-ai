@@ -13,7 +13,8 @@ export async function register({username, email, password}) {
         return response.data
     }
     catch(err) {
-        console.log(err);
+        console.log("API Register Error:", err.response?.data || err.message);
+        throw err;
     }
 }
 
@@ -25,7 +26,8 @@ export async function login({email, password}) {
         return response.data
     }
     catch(err) {
-        console.log(err);
+        console.log("API Login Error:", err.response?.data || err.message);
+        throw err;
     }
 }
 

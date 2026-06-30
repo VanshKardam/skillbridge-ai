@@ -22,8 +22,12 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        handleLogin(formData)
-        navigate("/")
+        const result = await handleLogin(formData)
+        if (result.success) {
+            navigate("/")
+        } else {
+            alert("Login failed: " + result.message)
+        }
     }
 
     if(loading) {
