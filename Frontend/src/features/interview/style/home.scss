@@ -1,0 +1,163 @@
+.home {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  min-height: calc(100vh - 80px);
+  max-width: 1400px;
+  margin: 2rem auto;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #333;
+  background-color: #f8fafc;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+
+  .left, .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+
+  .left {
+    textarea {
+      flex: 1;
+      resize: none;
+      min-height: 500px;
+    }
+  }
+
+  textarea, input[type="file"] {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      background: #ffffff;
+    }
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    textarea {
+      min-height: 200px;
+      resize: vertical;
+    }
+    
+    input[type="file"] {
+      padding: 0.8rem;
+      cursor: pointer;
+      background: #ffffff;
+      
+      &::file-selector-button {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        border: none;
+        background: #3b82f6;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        margin-right: 1.5rem;
+
+        &:hover {
+          background: #2563eb;
+        }
+      }
+    }
+  }
+
+  .generate-btn {
+    margin-top: auto;
+    padding: 1.2rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.23);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+// Dark Mode Aesthetics
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #020617;
+  }
+  
+  .home {
+    background-color: #0f172a;
+    color: #f1f5f9;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    border: 1px solid #1e293b;
+
+    .left, .right {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    textarea, input[type="file"] {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f1f5f9;
+
+      &::placeholder {
+        color: #64748b;
+      }
+
+      &:focus {
+        border-color: #3b82f6;
+        background: #1e293b;
+      }
+    }
+
+    .input-group label {
+      color: #94a3b8;
+    }
+    
+    input[type="file"] {
+      background: #1e293b;
+    }
+  }
+}
