@@ -1,5 +1,6 @@
 .home {
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem;
   min-height: calc(100vh - 80px);
@@ -118,6 +119,63 @@
       transform: translateY(1px);
     }
   }
+
+  .reports-section {
+    width: 100%;
+    margin-top: 1rem;
+    
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #1e293b;
+      font-size: 1.5rem;
+    }
+    
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .report-card {
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-color: #3b82f6;
+      }
+      
+      h3 {
+        margin: 0 0 0.75rem 0;
+        font-size: 1.1rem;
+        color: #0f172a;
+      }
+      
+      p {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 0 0 1rem 0;
+        line-height: 1.4;
+      }
+      
+      .date {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        font-weight: 500;
+      }
+    }
+    
+    .no-reports {
+      color: #64748b;
+      font-style: italic;
+    }
+  }
 }
 
 // Dark Mode Aesthetics
@@ -158,6 +216,27 @@
     
     input[type="file"] {
       background: #1e293b;
+    }
+
+    .reports-section {
+      h2 { color: #f1f5f9; }
+      
+      .report-card {
+        background: #1e293b;
+        border-color: #334155;
+        
+        h3 { color: #f1f5f9; }
+        p { color: #94a3b8; }
+        
+        &:hover {
+          border-color: #3b82f6;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+      }
+      
+      .no-reports {
+        color: #64748b;
+      }
     }
   }
 }

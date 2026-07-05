@@ -14,7 +14,7 @@ export const generateInterviewReport = async ({jobDescription, selfDescription, 
     const formData = new FormData()
     formData.append("jobDescription", jobDescription)
     formData.append("selfDescription", selfDescription)
-    formData.append("resumeFile", resumeFile)
+    formData.append("resume", resumeFile)
 
     const response = await api.post("/api/interview", formData, {
         headers: {
@@ -32,7 +32,7 @@ export const generateInterviewReport = async ({jobDescription, selfDescription, 
  */
 
 export const getInterviewReportById = async (interviewId) => {
-    const response = await api.get(`/api/interview/${interviewId}`)
+    const response = await api.get(`/api/interview/report/${interviewId}`)
     if(response?.data){
         return response.data;
     }
@@ -44,9 +44,23 @@ export const getInterviewReportById = async (interviewId) => {
  */
 
 export const getAllInterviewReports = async () => {
-    const response = await api.get("/api/interview/user/all")
+    const response = await api.get("/api/interview/")
     if(response?.data){
         return response.data;
     }
     throw new Error("Failed to get all interview reports")
+}
+
+/**
+ * @description Service to Generate resume pdf for a user on the basis of user self description, resume and job description.
+ */
+
+export const generateResumePdf = async (interviewReportId) => {
+    const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, {}, {
+        responseType: 'blob'
+    })
+    if(response?.data){
+        return response.data;
+    }
+    throw new Error("Failed to generate resume pdf")
 }
