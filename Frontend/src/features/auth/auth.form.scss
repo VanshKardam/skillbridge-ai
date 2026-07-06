@@ -281,6 +281,10 @@ $input-border: #e5e7eb;
         align-items: center;
         justify-content: center;
         background: $bg-light;
+
+        @media (max-width: 899px) {
+            display: none;
+        }
     }
 
     .hero-card {
