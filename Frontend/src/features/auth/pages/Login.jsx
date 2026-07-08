@@ -9,8 +9,8 @@ function Login() {
     const { loading, handleLogin, handleGoogleLogin } = useAuth()
 
     const [formData, setFormData] = useState({
-        email: "",
-        password: ""
+        email: "user@gmail.com",
+        password: "password"
     })
     const [showPassword, setShowPassword] = useState(false)
 
@@ -83,37 +83,11 @@ function Login() {
                                 </button>
                             </div>
                         </div>
-                        
-                        <div className="form-options">
-                            <label className="remember-me">
-                                <input type="checkbox" name="remember" />
-                                <span>Remember me</span>
-                            </label>
-                        </div>
-
-                        <button className="button primary-button" type="submit">Sign in</button>
-                        <button 
-                            className="button primary-button" 
-                            type="button" 
-                            onClick={async () => {
-                                const guestData = { email: "user@gmail.com", password: "password" };
-                                setFormData(guestData);
-                                const result = await handleLogin(guestData);
-                                if (result.success) {
-                                    navigate("/");
-                                } else {
-                                    alert("Guest account not found! Please register user@gmail.com once to create it.");
-                                }
-                            }}
-                            style={{marginTop: '10px'}}
-                        >
-                            Login as Guest
-                        </button>
+                        <button className="button primary-button" type="submit" style={{marginTop: '15px'}}>Sign in</button>
                     </form>
 
                     <div className="links-container">
                         <span>Don't have an account? <Link to="/register">Sign up</Link></span>
-                        <a href="#">Forgot Password</a>
                     </div>
 
                     <div className="google-auth-container">
