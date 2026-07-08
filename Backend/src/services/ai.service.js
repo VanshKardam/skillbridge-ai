@@ -149,9 +149,10 @@ async function generateResumePdf({resume, selfDescription,jobDescription}){
     1. STRUCTURE & ATS COMPLIANCE: 
        - Use clean, semantic HTML. Use <h1> for the candidate's name, <h2> for main section headers (e.g., "EDUCATION", "TECHNICAL SKILLS", "PROJECTS").
        - Do NOT use tables or complex grids.
-    2. CONTENT EXCELLENCE: 
-       - EXACT DETAILS: You MUST extract and use the exact Candidate Name, Contact Info (email, phone, links), Education, and past job titles from the provided 'Resume'. DO NOT invent a fake name like 'John Doe'.
-       - Tailor the bullet points strictly to the provided Job Description. Use strong action verbs.
+    2. CONTENT EXCELLENCE & REWRITING (CRITICAL):
+       - EXACT DETAILS: Keep the exact Candidate Name, Contact Info, and Education from the 'Resume'. 
+       - REWRITE AND ENHANCE: DO NOT just copy-paste the original bullet points. You MUST REWRITE and IMPROVE the experience and project bullet points to aggressively match the Job Description.
+       - USE STRONG ACTION VERBS: Start every bullet point with a powerful action verb. Quantify achievements (add metric placeholders if needed).
        - The resume MUST fit on ONE PAGE. Pack information densely and write concise bullet points.
     3. DESIGN & CSS AESTHETICS (CRITICAL):
        - FONT: Use a classic serif font for the entire document (e.g., font-family: "Times New Roman", Times, serif). Font size should be small (10pt - 11pt) to fit everything on one page. Line height should be extremely tight (1.2).
