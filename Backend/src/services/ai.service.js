@@ -2,10 +2,12 @@ const { GoogleGenAI } = require("@google/genai");
 const { z } = require("zod");
 const { zodToJsonSchema } = require("zod-to-json-schema");
 const puppeteer = require("puppeteer");
+const { Mistral } = require('@mistralai/mistralai');
+const Groq = require('groq-sdk');
 
-const ai = new GoogleGenAI({
-    apikey: process.env.GEMINI_API_KEY
-});
+const mistral = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const ai = new GoogleGenAI({ apikey: process.env.GEMINI_API_KEY });
 
 const interviewReportSchema = z.object({
     jobDescription : z.string().describe("Job description for which the interview is being prepared for."),
@@ -66,19 +68,46 @@ async function generateInterviewReport({resume, selfDescription, jobDescription}
       ]
     }
     `
-    try {
+        try {
+        // 1. Try Gemini First
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,
-            config: {
-                responseMimeType: "application/json"
-            }
+            config: { responseMimeType: "application/json" }
         });
-        const interviewReport = interviewReportSchema.parse(JSON.parse(response.text));
-        return interviewReport;
-    } catch (error) {
-        console.log("Error generating report:", error)
+        return interviewReportSchema.parse(JSON.parse(response.text));
+
+    } catch (geminiError) {
+        console.log("Gemini Failed, falling back to Mistral API...");
+        
+        try {
+            // 2. Mistral Fallback
+            const mistralResponse = await mistral.chat.complete({
+                model: "mistral-small-latest",
+                messages: [{ role: 'user', content: prompt }],
+                responseFormat: { type: 'json_object' }
+            });
+            return interviewReportSchema.parse(JSON.parse(mistralResponse.choices[0].message.content));
+            
+        } catch (mistralError) {
+            console.log("Mistral Failed, falling back to Groq API...");
+            
+            try {
+                // 3. Groq Fallback (Llama 3)
+                const groqResponse = await groq.chat.completions.create({
+                    messages: [{ role: 'user', content: prompt }],
+                    model: "llama3-8b-8192",
+                    response_format: { type: 'json_object' }
+                });
+                return interviewReportSchema.parse(JSON.parse(groqResponse.choices[0].message.content));
+                
+            } catch (groqError) {
+                console.error("CRITICAL: All 3 APIs Failed!");
+                throw groqError;
+            }
+        }
     }
+
 }
 
 async function generatePdfFromHtml(htmlContent) {
@@ -136,9 +165,10 @@ async function generateResumePdf({resume, selfDescription,jobDescription}){
        - Do NOT use 'height: 100vh', 'overflow: hidden', or absolute positioning.
     `;
     try {
-        let response;
+        let jsonContent;
         try {
-            response = await ai.models.generateContent({
+            // 1. Try Gemini First
+            const response = await ai.models.generateContent({
                 model: "gemini-2.5-flash",
                 contents: prompt,
                 config: {
@@ -146,22 +176,37 @@ async function generateResumePdf({resume, selfDescription,jobDescription}){
                     responseSchema: zodToJsonSchema(resumeHtmlCssSchema)
                 }
             });
+            jsonContent = JSON.parse(response.text);
         } catch (geminiError) {
-            if (geminiError.status === 503) {
-                console.log("gemini-2.5-flash 503 unavailable, falling back to gemini-1.5-flash...");
-                response = await ai.models.generateContent({
-                    model: "gemini-1.5-flash",
-                    contents: prompt,
-                    config: {
-                        responseMimeType: "application/json",
-                        responseSchema: zodToJsonSchema(resumeHtmlCssSchema)
-                    }
+            console.log("Gemini Failed, falling back to Mistral API...");
+            
+            try {
+                // 2. Mistral Fallback
+                const mistralResponse = await mistral.chat.complete({
+                    model: "mistral-small-latest",
+                    messages: [{ role: 'user', content: prompt }],
+                    responseFormat: { type: 'json_object' }
                 });
-            } else {
-                throw geminiError;
+                jsonContent = JSON.parse(mistralResponse.choices[0].message.content);
+                
+            } catch (mistralError) {
+                console.log("Mistral Failed, falling back to Groq API...");
+                
+                try {
+                    // 3. Groq Fallback (Llama 3)
+                    const groqResponse = await groq.chat.completions.create({
+                        messages: [{ role: 'user', content: prompt }],
+                        model: "llama3-8b-8192",
+                        response_format: { type: 'json_object' }
+                    });
+                    jsonContent = JSON.parse(groqResponse.choices[0].message.content);
+                    
+                } catch (groqError) {
+                    console.error("CRITICAL: All 3 APIs Failed for Resume!");
+                    throw groqError;
+                }
             }
         }
-        const jsonContent = JSON.parse(response.text)
         
         const html = jsonContent.resumeHtml || "";
         const css = jsonContent.resumeCss || "";
