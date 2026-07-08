@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import "../auth.form.scss";
 import { useAuth } from '../hooks/useAuth'
+import { GoogleLogin } from '@react-oauth/google';
 
 function Login() {
     const navigate = useNavigate()
-    const { loading, handleLogin } = useAuth()
+    const { loading, handleLogin, handleGoogleLogin } = useAuth()
 
     const [formData, setFormData] = useState({
         email: "",
@@ -91,6 +92,23 @@ function Login() {
                         </div>
 
                         <button className="button primary-button" type="submit">Sign in</button>
+                        <button 
+                            className="button primary-button" 
+                            type="button" 
+                            onClick={async () => {
+                                const guestData = { email: "user@gmail.com", password: "password" };
+                                setFormData(guestData);
+                                const result = await handleLogin(guestData);
+                                if (result.success) {
+                                    navigate("/");
+                                } else {
+                                    alert("Guest account not found! Please register user@gmail.com once to create it.");
+                                }
+                            }}
+                            style={{marginTop: '10px'}}
+                        >
+                            Login as Guest
+                        </button>
                     </form>
 
                     <div className="links-container">
@@ -99,19 +117,25 @@ function Login() {
                     </div>
 
                     <div className="google-auth-container">
-                        <div className="divider">
-                            <span>Or continue with</span>
+                        <div className="divider"><span>Or continue with</span></div>
+    
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                            <GoogleLogin
+                                onSuccess={async (credentialResponse) => {
+                                    const result = await handleGoogleLogin(credentialResponse.credential);
+                                    if (result.success) {
+                                        navigate("/");
+                                    } else {
+                                        alert("Google Login failed: " + result.message);
+                                    }
+                                }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                            />
                         </div>
-                        <button className="google-btn-mock" type="button">
-                            <svg className="google-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.67 15.63 16.89 16.79 15.73 17.57V20.34H19.29C21.37 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"/>
-                                <path d="M12 23C14.97 23 17.46 22.02 19.29 20.34L15.73 17.57C14.74 18.23 13.48 18.63 12 18.63C9.14 18.63 6.71 16.7 5.84 14.11H2.17V16.96C3.99 20.58 7.7 23 12 23Z" fill="#34A853"/>
-                                <path d="M5.84 14.11C5.62 13.45 5.49 12.74 5.49 12C5.49 11.26 5.62 10.55 5.84 9.89V7.04H2.17C1.42 8.53 1 10.21 1 12C1 13.79 1.42 15.47 2.17 16.96L5.84 14.11Z" fill="#FBBC05"/>
-                                <path d="M12 5.38C13.62 5.38 15.06 5.93 16.2 7.02L19.38 3.84C17.46 2.05 14.97 1 12 1C7.7 1 3.99 3.42 2.17 7.04L5.84 9.89C6.71 7.3 9.14 5.38 12 5.38Z" fill="#EA4335"/>
-                            </svg>
-                            <span className="google-btn-text">Sign in with Google</span>
-                        </button>
                     </div>
+
                 </div>
             </div>
 

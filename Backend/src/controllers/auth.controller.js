@@ -1,3 +1,6 @@
+const { OAuth2Client } = require('google-auth-library');
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 const userModel = require("../models/user.model")
 
 const bcrypt = require("bcryptjs")
@@ -174,9 +177,72 @@ async function getMeController(req, res) {
     })
 }
 
+const googleLogin = async (req, res) => {
+    try {
+        const { token } = req.body;
+        
+        // 1. Ask Google to verify the token is real
+        const ticket = await googleClient.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        
+        // 2. Extract the user's data
+        const payload = ticket.getPayload();
+        const email = payload.email;
+        const name = payload.name;
+        
+        // 3. Check if this email exists in Database
+        let user = await userModel.findOne({ email });
+
+        if (!user) {
+            // If they don't exist, create a new user account with a random secure password
+            const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10);
+            const hashedPassword = await bcrypt.hash(randomPassword, 10);
+            
+            user = await userModel.create({
+                username: name,
+                email: email,
+                password: hashedPassword
+            });
+        }
+        
+        // 4. Generate the JWT token (identical to normal login)
+        const jwtToken = jwt.sign(
+            {id: user._id, username: user.username},
+            process.env.JWT_SECRET,
+            {expiresIn: "1d"}
+        );
+        
+        // 5. Set the HTTP-Only cookie so the browser remembers they are logged in
+        res.cookie("token", jwtToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 24 * 60 * 60 * 1000
+        });
+        
+        return res.status(200).json({ 
+            success: true, 
+            message: "Google login successful", 
+            user: { 
+                id: user._id,
+                username: user.username,
+                email: user.email 
+            } 
+        });
+
+    } catch (error) {
+        console.error("Google Auth Error:", error);
+        return res.status(401).json({ success: false, message: "Invalid Google Token" });
+    }
+};
+
+
 module.exports = {
     registerUserController,
     loginUserController,
     logoutUserController,
-    getMeController
+    getMeController,
+    googleLogin
 }

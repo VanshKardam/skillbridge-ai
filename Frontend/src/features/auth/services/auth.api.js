@@ -47,6 +47,17 @@ export async function getMe() {
         return response.data
     }
     catch(err) {
-        console.log(err);
+        throw err;
+    }
+}
+
+export async function googleLogin(token) {
+    try {
+        const response = await api.post("/api/auth/google", { token })
+        return response.data
+    }
+    catch(err) {
+        console.log("API Google Login Error:", err.response?.data || err.message);
+        throw err;
     }
 }

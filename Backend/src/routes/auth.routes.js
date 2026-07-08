@@ -23,6 +23,13 @@ authRouter.post("/register", authController.registerUserController)
 authRouter.post("/login", authController.loginUserController)
 
 /**
+ * @route POST /api/auth/google
+ * @description login user via Google Auth token
+ * @access Public
+ */
+authRouter.post("/google", authController.googleLogin)
+
+/**
  * @route GET /api/auth/logout
  * @description clear token from user cookie and add token in blacklist
  * @access Public
