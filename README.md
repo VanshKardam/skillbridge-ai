@@ -4,7 +4,7 @@ SkillBridge AI is an intelligent platform designed to help developers build orga
 
 ## ✨ Features
 - **AI-Powered Resume Generation:** Automatically generates a beautifully formatted, professional PDF resume tailored to a specific job description.
-- **Skill Gap Analysis:** Highlights exact skills you are missing for a target job and gives you a match percentage.
+- **Skill Gap Analysis:** Highlights exact skills you are missing for a target job and provides a match percentage.
 - **Mock Interview Preparation:** Generates personalized technical and behavioral interview questions based on your resume and the target role.
 - **Secure Authentication:** JWT-based user authentication and secure password hashing.
 - **Responsive Design:** Fully responsive, modern user interface built with React and SCSS.
@@ -24,7 +24,11 @@ SkillBridge AI is an intelligent platform designed to help developers build orga
 
 ---
 
-## 💻 Local Setup Instructions
+## 💻 Local Setup & Installation
+
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB
 
 ### 1. Clone the repository
 ```bash
@@ -32,14 +36,10 @@ git clone https://github.com/VanshKardam/skillbridge-ai.git
 cd skillbridge-ai
 ```
 
-### 2. Setup the Backend
-Open a terminal and navigate to the backend folder:
-```bash
-cd Backend
-npm install
-```
+### 2. Environment Variables
+You will need to set up environment variables for both the frontend and backend.
 
-Create a `.env` file inside the `Backend` folder with the following variables:
+**Backend (`Backend/.env`)**:
 ```env
 MONGO_URI=your_mongodb_connection_string
 GEMINI_API_KEY=your_gemini_api_key
@@ -48,34 +48,37 @@ FRONTEND_URL=http://localhost:5174
 PORT=3000
 ```
 
-Start the backend server:
-```bash
-npm run dev
-```
-
-### 3. Setup the Frontend
-Open a new terminal and navigate to the frontend folder:
-```bash
-cd Frontend
-npm install
-```
-
-Create a `.env` file inside the `Frontend` folder with the following variable:
+**Frontend (`Frontend/.env`)**:
 ```env
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-Start the frontend development server:
+### 3. Running the Application (Windows)
+For Windows users, a convenient startup script is included. Simply double-click the `start.bat` file in the root directory. This script will automatically install all dependencies (including Puppeteer) and start both development servers.
+
+Alternatively, you can run them manually:
 ```bash
+# Terminal 1: Backend
+cd Backend
+npm install
+npm run dev
+
+# Terminal 2: Frontend
+cd Frontend
+npm install
 npm run dev
 ```
 
 ---
 
-## 🚀 Deployment Guide
-This project is fully configured for cloud deployment.
-1. **Frontend:** Deployed on [Vercel](https://vercel.com). Make sure to set the `VITE_API_BASE_URL` environment variable to your live Backend URL. *(Includes `vercel.json` for proper React SPA routing)*.
-2. **Backend:** Deployed on [Render](https://render.com). Make sure to set the `FRONTEND_URL` environment variable to your live Vercel URL to allow CORS. Puppeteer is configured with `--no-sandbox` to run properly in Render's Linux environment.
+## 🚀 Deployment
+
+The application is structured for easy cloud deployment:
+
+- **Frontend (Vercel):** The React SPA is optimized for Vercel deployment. A `vercel.json` file is included to handle client-side routing rules. 
+- **Backend (Render):** The Node.js Express server is configured for deployment on platforms like Render. Puppeteer is configured with `--no-sandbox` to ensure compatibility with cloud Linux environments.
+
+*Note for Free Tier Hosting: If deployed on Render's free tier, the backend server may spin down after 15 minutes of inactivity. Initial requests after a period of inactivity may take up to 50 seconds while the server wakes up.*
 
 ---
 *Built with ❤️ by Vansh Kardam*
