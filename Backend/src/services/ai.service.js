@@ -148,10 +148,18 @@ async function generateResumePdf({resume, selfDescription,jobDescription}){
         resumeCss: z.string().describe("Css content of the resume.")
     });
 
-    const prompt = `Generate an HTML and CSS for a highly professional, ATS-optimized 1-page resume tailored to the following details:
-    Resume: ${resume}
-    Self Description: ${selfDescription}
-    Job Description: ${jobDescription}
+    const prompt = `You are an expert Executive Resume Writer. Your task is to generate HTML and CSS for a highly professional, ATS-optimized 1-page resume. 
+    
+    You MUST tailor the candidate's existing resume to perfectly match the provided Job Description. Do not just format their old resume; you must actively rewrite their bullet points to highlight the skills the employer is looking for.
+
+    CANDIDATE's CURRENT RESUME: 
+    ${resume}
+    
+    CANDIDATE's SELF DESCRIPTION: 
+    ${selfDescription}
+    
+    TARGET JOB DESCRIPTION: 
+    ${jobDescription}
     
     You MUST return the output as a valid JSON object adhering to this exact structure:
     {
@@ -161,19 +169,20 @@ async function generateResumePdf({resume, selfDescription,jobDescription}){
 
     CRITICAL PROFESSIONAL RESUME RULES (MIMIC IVY LEAGUE / TOP TECH TEMPLATE):
     1. STRUCTURE & ATS COMPLIANCE: 
-       - Use clean, semantic HTML. Use <h1> for the candidate's name, <h2> for main section headers (e.g., "EDUCATION", "TECHNICAL SKILLS", "PROJECTS").
+       - Use clean, semantic HTML. Use <h1> for the candidate's name, <h2> for main section headers (e.g., "EDUCATION", "TECHNICAL SKILLS", "EXPERIENCE", "PROJECTS").
        - Do NOT use tables or complex grids.
-    2. CONTENT EXCELLENCE & REWRITING (CRITICAL):
+    2. TAILORING & REWRITING (CRITICAL - DO NOT FAIL THIS):
        - EXACT DETAILS: Keep the exact Candidate Name, Contact Info, and Education from the 'Resume'. 
-       - REWRITE AND ENHANCE: DO NOT just copy-paste the original bullet points. You MUST REWRITE and IMPROVE the experience and project bullet points to aggressively match the Job Description.
-       - USE STRONG ACTION VERBS: Start every bullet point with a powerful action verb. Quantify achievements (add metric placeholders if needed).
+       - REWRITE EVERYTHING ELSE: You MUST aggressively rewrite the experience and project bullet points so they directly address the requirements in the 'TARGET JOB DESCRIPTION'. 
+       - If the job wants React and the user knows React, make sure React is the first word in the bullet point!
+       - USE STRONG ACTION VERBS: Start every bullet point with a powerful action verb (e.g., "Architected", "Spearheaded", "Engineered"). Quantify achievements with metrics (e.g., "improving performance by 25%").
        - The resume MUST fit on ONE PAGE. Pack information densely and write concise bullet points.
-    3. DESIGN & CSS AESTHETICS (CRITICAL):
+    3. DESIGN & CSS AESTHETICS:
        - FONT: Use a classic serif font for the entire document (e.g., font-family: "Times New Roman", Times, serif). Font size should be small (10pt - 11pt) to fit everything on one page. Line height should be extremely tight (1.2).
        - MARGINS & SPACING: Ensure the CSS relies on very small margins (e.g., margin: 0; padding: 0 for paragraphs). 
        - HEADER: The name (<h1>) should be centered, UPPERCASE, bold, and large. Contact info below it should be centered, separated by pipes (|). Links (email, LinkedIn, GitHub) MUST be colored blue (color: #0000ee; text-decoration: none;).
        - SECTION HEADERS (<h2>): Must be UPPERCASE, left-aligned, bold, with a solid black bottom border (border-bottom: 1px solid #000). Space below the header should be minimal (e.g., margin-bottom: 4px).
-       - TECHNICAL SKILLS: Do NOT use a bulleted list that takes up vertical space. Instead, use a dense, inline format. Example: <div><strong>Languages:</strong> C, C++, JavaScript</div>.
+       - TECHNICAL SKILLS: Use a dense, inline format. Example: <div><strong>Languages:</strong> C, C++, JavaScript</div>. Make sure the skills listed here match the Job Description exactly!
        - EXPERIENCE & PROJECTS: Use a flex layout to align the Title/Role on the left (bold) and the Date on the right. Subtitles (like technologies used) should be directly below or next to it in italics.
        - BULLET POINTS: Make bullet points tight (margin-top: 2px; margin-bottom: 2px; padding-left: 20px).
     4. PREVENT PDF RENDERING BUGS:
