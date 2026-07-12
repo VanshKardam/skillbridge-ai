@@ -38,6 +38,13 @@ const interviewReportSchema = z.object({
         topic : z.string().describe("Topic to be covered on the day."),
         tasks : z.array(z.string()).describe("List of tasks to be done on the day.")
     })).describe("A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively"),
+    primarySkills : z.array(z.string()).describe("Primary skills that are absolutely required for the job based on the job description."),
+    secondarySkills : z.array(z.string()).describe("Secondary or nice-to-have skills that are optional but give an edge based on the job description."),
+    cheatSheet : z.object({
+        companySummary: z.string().describe("A brief 1-2 sentence summary of what the company likely does based on the job description."),
+        topSkillsToHighlight: z.array(z.string()).describe("Top 3 skills the candidate should emphasize during the interview based on their resume and the job."),
+        questionsToAskInterviewer: z.array(z.string()).describe("2 thoughtful questions the candidate should ask the interviewer at the end.")
+    }).describe("A quick reference cheat sheet for the candidate just before the interview."),
     title : z.string().describe("Title of the interview report, based on the job title and the candidate's experience")
 });
 
@@ -63,6 +70,13 @@ async function generateInterviewReport({resume, selfDescription, jobDescription}
       "skillGaps": [
         { "skill": "string", "severity": "low|medium|high" }
       ],
+      "primarySkills": ["string"],
+      "secondarySkills": ["string"],
+      "cheatSheet": {
+        "companySummary": "string",
+        "topSkillsToHighlight": ["string"],
+        "questionsToAskInterviewer": ["string"]
+      },
       "preparationPlan": [
         { "day": 1, "focus": "string", "topic": "string", "tasks": ["string"] }
       ]

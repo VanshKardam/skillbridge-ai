@@ -33,8 +33,14 @@ const mongoose = require('mongoose');
  *      focus : String,
  *      topic : string,
  *      tasks : [String]
- *      
  * }]
+ * - primarySkills : [String]
+ * - secondarySkills : [String]
+ * - cheatSheet : {
+ *      companySummary : String,
+ *      topSkillsToHighlight : [String],
+ *      questionsToAskInterviewer : [String]
+ * }
  */
 
 const technicalQuestionSchema = new mongoose.Schema({
@@ -144,6 +150,19 @@ const interviewReportSchema = new mongoose.Schema({
     behavioralQuestions : [ behavioralQuestionSchema ],
     skillGaps : [ skillGapSchema ],
     preparationPlan : [ preparationTaskSchema ],
+    primarySkills: {
+        type: [String],
+        default: []
+    },
+    secondarySkills: {
+        type: [String],
+        default: []
+    },
+    cheatSheet: {
+        companySummary: String,
+        topSkillsToHighlight: [String],
+        questionsToAskInterviewer: [String]
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref : "User",
