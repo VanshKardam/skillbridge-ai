@@ -144,21 +144,21 @@ const Interview = () => {
                 <div className="content-section">
                     <h2>Interview Cheat Sheet</h2>
                     {report.cheatSheet && (
-                        <div className="question-card roadmap-card" style={{ padding: '1.5rem', backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
+                        <div className="question-card roadmap-card" style={{ padding: '1.5rem' }}>
                             <h4 style={{ color: '#6366f1', marginBottom: '0.8rem', fontSize: '1.1rem' }}>Company & Role Summary</h4>
-                            <p style={{ marginBottom: '2rem', lineHeight: '1.6', color: '#cbd5e1' }}>{report.cheatSheet.companySummary}</p>
+                            <p style={{ marginBottom: '2rem', lineHeight: '1.6' }}>{report.cheatSheet.companySummary}</p>
                             
                             <h4 style={{ color: '#2ecc71', marginBottom: '0.8rem', fontSize: '1.1rem' }}>Top Skills to Highlight</h4>
                             <ul style={{ marginBottom: '2rem', paddingLeft: '1.5rem' }}>
                                 {report.cheatSheet.topSkillsToHighlight?.map((skill, index) => (
-                                    <li key={index} style={{ marginBottom: '0.5rem', color: '#cbd5e1' }}>{skill}</li>
+                                    <li key={index} style={{ marginBottom: '0.5rem' }}>{skill}</li>
                                 ))}
                             </ul>
                             
                             <h4 style={{ color: '#f39c12', marginBottom: '0.8rem', fontSize: '1.1rem' }}>Questions to Ask the Interviewer</h4>
                             <ul style={{ paddingLeft: '1.5rem' }}>
                                 {report.cheatSheet.questionsToAskInterviewer?.map((question, index) => (
-                                    <li key={index} style={{ marginBottom: '0.5rem', color: '#cbd5e1' }}>{question}</li>
+                                    <li key={index} style={{ marginBottom: '0.5rem' }}>{question}</li>
                                 ))}
                             </ul>
                         </div>
